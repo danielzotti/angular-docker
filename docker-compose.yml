@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - "4201:4201"
+    container_name: angular-docker
+    image: dz/angular-docker
+    volumes:
+      - .:/app
+      - /app/node_modules
