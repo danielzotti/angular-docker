@@ -1,27 +1,50 @@
 # AngularDocker
+This is an example project on how to use Angular with Docker
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 10.1.3.
+# nginx
+`nginx-custom.conf`
+```
+server {
+  listen 80;
+  location / {
+    root /usr/share/nginx/html;
+    index index.html index.htm;
+    try_files $uri $uri/ /index.html =404;
+  }
+}
+```
+# Docker
+`.dockerignore`
+```
+node_modules
+```
 
-## Development server
+`Dockerfile`
+```
+# Stage 0, "build-stage", based on Node.js, to build and compile Angular
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+FROM node:14.12.0-alpine as build-stage
+WORKDIR /app
+COPY package*.json /app/
+RUN npm install
+COPY ./ /app/
+ARG configuration=production
+RUN npm run build -- --output-path=./dist/out --configuration $configuration
 
-## Code scaffolding
+# Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
+FROM nginx:1.19.2-alpine
+COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
+```
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+# Docker permission denied
+For Linux console:
+```
+sudo groupadd docker
+sudo usermod -aG docker ${USER}
+newgrp docker
+su - ${USER}
+```
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+# Thanks to
+- https://medium.com/@tiangolo/angular-in-docker-with-nginx-supporting-environments-built-with-multi-stage-docker-builds-bb9f1724e984
