@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile
       args:
         - configuration=dev
-    container_name: angular-docker_deploy
-    image: dz/angular-docker_deploy
+    container_name: angular-docker
+    image: dz/angular-docker
     restart: unless-stopped
     ports:
       - "${PORT}:80"
