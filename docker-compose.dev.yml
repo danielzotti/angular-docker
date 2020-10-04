@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - configuration=dev
+    container_name: angular-docker_dev
+    image: dz/angular-docker_dev
+    ports:
+      - "80:80"

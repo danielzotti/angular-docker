@@ -57,6 +57,16 @@
             "scripts": []
           },
           "configurations": {
+            "dev": {
+              "optimization": false,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": false,
+              "namedChunks": false,
+              "extractLicenses": false,
+              "vendorChunk": false,
+              "buildOptimizer": false,
+            },
             "production": {
               "fileReplacements": [
                 {
@@ -93,6 +103,9 @@
             "browserTarget": "angular-docker:build"
           },
           "configurations": {
+            "dev": {
+              "browserTarget": "angular-docker:build:dev"
+            },
             "production": {
               "browserTarget": "angular-docker:build:production"
             }

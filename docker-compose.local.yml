@@ -7,8 +7,8 @@ services:
       dockerfile: Dockerfile.local
     ports:
       - "4201:4201"
-    container_name: angular-docker
-    image: dz/angular-docker
+    container_name: angular-docker_local
+    image: dz/angular-docker_local
     volumes:
       - .:/app
       - /app/node_modules
