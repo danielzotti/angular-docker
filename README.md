@@ -1,13 +1,20 @@
 # AngularDocker
 This is an example project on how to use Angular with Docker
 
-## Local development
-- `npm run start:local`
+# TL;DR
+- Local development (**without docker**) with "classic" Angular CLI
+    - `npm run start` aka `ng serve`
+- Local development: every change to code it refreshes
+    - `npm run docker:start:local`
+- Dev version served by nginx
+    - `npm run docker:start:dev`
+- Prod version served by nginx
+    - `npm run docker:start:prod`
 
 ## Configuration files
 
 ### nginx
-`nginx-custom.conf`
+Always return the index.html file (for SPA): `nginx-custom.conf`
 ```
 server {
   listen 80;
@@ -29,36 +36,72 @@ node_modules
 dist
 ```
 
-#### `Dockerfile.dev`
+#### `Dockerfile.local`
 ```
 FROM node:14.12.0-alpine
 WORKDIR /app
 COPY package*.json ./
 RUN npm install
 RUN npm install -g @angular/cli
-COPY . ./
+COPY . .
 EXPOSE 4201
 CMD ng serve --host 0.0.0.0 --port 4201
 # NB: --disableHostCheck option doesn't work!
 ```
 
-#### `Dockerfile`
+#### `Dockerfile` (`dev` and `prod`)
 ```
 # Stage 0, "build-stage", based on Node.js, to build and compile Angular
 FROM node:14.12.0-alpine as build-stage
-WORKDIR /app
+WORKDIR app
 COPY package*.json /app/
 RUN npm install
-COPY ./ /app/
+RUN npm install -g @angular/cli @angular-devkit/build-angular
+COPY . .
 ARG configuration=production
-RUN npm run build -- --output-path=./dist/out --configuration $configuration
+RUN npm run build -- --outputPath=/app/dist --configuration=${configuration}
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 FROM nginx:1.19.2-alpine
-COPY --from=build-stage /app/dist/out/ /usr/share/nginx/html
+COPY --from=build-stage /app/dist/ /usr/share/nginx/html/
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
 ```
 
+#### `docker-compose.local.yml`
+```
+version: '3'
+
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile.local
+    ports:
+      - "4201:4201"
+    container_name: angular-docker_local
+    image: dz/angular-docker_local
+    volumes:
+      - .:/app
+      - /app/node_modules
+```
+
+#### `docker-compose.{env}.yml`
+Note that `{env}` must be replaced by a string (`dev`, `prod` or a different environment name)
+```
+version: '3'
+
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - configuration={env}
+    container_name: angular-docker_{env}
+    image: dz/angular-docker_{env}
+    ports:
+      - "80:80"
+```
 ## Docker `permission denied` error
 For Linux console:
 ```

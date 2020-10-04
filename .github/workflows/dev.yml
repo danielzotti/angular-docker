@@ -28,6 +28,4 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version}}
-      - run: |
-          npm ci
-          npm run docker:dev
+      - run: npm run docker:start:dev
