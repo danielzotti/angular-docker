@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "docker:start:local": "docker-compose --file docker-compose.local.yml up --build angular",
     "docker:start:dev": "docker-compose --file docker-compose.dev.yml up -d --build --force-recreate angular",
-    "docker:start:prod": "docker-compose --file docker-compose.prod.yml up -d --build --force-recreate angular",
+    "docker:start:prod": "docker-compose --file docker-compose.prod.yml up -d --build --force-recreate angular"
   },
   "private": true,
   "dependencies": {
