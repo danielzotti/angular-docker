@@ -11,4 +11,4 @@ services:
     image: dz/angular-docker_deploy
     restart: unless-stopped
     ports:
-      - "${PORT:4010}:80"
+      - "${PORT}:80"
