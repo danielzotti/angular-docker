@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "docker:build:dev": "docker build -t angular-docker:dev --build-arg configuration='' .",
     "docker:build:prod": "docker build -t angular-docker:prod --build-arg configuration='production' .",
-    "docker:run:dev": "docker run -p 80:80 angular-docker:dev",
+    "docker:run:dev": "docker run -p 8081:80 angular-docker:dev",
     "docker:run:prod": "docker run -p 80:80 angular-docker:prod",
     "docker:dev": "npm run docker:build:dev && npm run docker:run:dev",
     "docker:prod": "npm run docker:build:prod && npm run docker:run:prod"
