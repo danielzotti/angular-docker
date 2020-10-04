@@ -1,0 +1,14 @@
+version: '3'
+
+services:
+  angular:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        - configuration=dev
+    container_name: angular-docker_deploy
+    image: dz/angular-docker_deploy
+    restart: unless-stopped
+    ports:
+      - "${PORT:4010}:80"
