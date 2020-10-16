@@ -28,5 +28,4 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: ${{ matrix.node-version}}
-#      - run: PORT=4011 CONFIGURATION=production docker-compose -f docker-compose.deploy.yml -p angular-docker up -d --build
-      - run: PORT=4011 CONFIGURATION=production docker-compose -f docker-compose.deploy.yml -p angular-docker up -d --build
+      - run: PORT=4011 CONFIGURATION=dev docker-compose -f docker-compose.deploy.yml -p angular-docker up -d --build
