@@ -20,6 +20,6 @@ RUN npm run build -- --outputPath=/app/dist --configuration=${configuration}
 
 FROM nginx:1.19.2-alpine
 
-COPY --from=build-stage /app/dist/ /usr/share/nginx/html/
+COPY --from=build-stage /app/dist/ /app/
 
 COPY ./nginx-custom.conf /etc/nginx/conf.d/default.conf
