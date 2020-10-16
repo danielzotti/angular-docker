@@ -29,4 +29,4 @@ jobs:
         with:
           node-version: ${{ matrix.node-version}}
 #      - run: PORT=4011 CONFIGURATION=production docker-compose -f docker-compose.deploy.yml -p angular-docker up -d --build
-      - run: PORT=4011 docker-compose -f docker-compose.deploy.yml -p angular-docker up -d --build
+      - run: PORT=4011 CONFIGURATION=production docker-compose -f docker-compose.deploy.yml -p angular-docker up -d --build

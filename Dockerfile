@@ -17,7 +17,7 @@ COPY . .
 #ARG configuration=production
 
 # run the build inside workdir /app with output path /app/dist
-RUN npm run build -- --outputPath=./dist --configuration=${configuration:production}
+RUN npm run build -- --outputPath=./dist --configuration=${configuration}
 
 # Stage 1, based on Nginx, to have only the compiled app, ready for production with Nginx
 
