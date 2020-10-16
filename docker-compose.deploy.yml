@@ -6,7 +6,7 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        - configuration=${CONFIGURATION:production}
+        - configuration=${CONFIGURATION}
     container_name: angular-docker
     image: dz/angular-docker
     restart: unless-stopped
